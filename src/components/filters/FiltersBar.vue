@@ -3,6 +3,8 @@ import { useCharactersStore } from '@/stores/characters-store';
 import FilterButton from './FilterButton.vue';
 
 const store = useCharactersStore();
+const emit = defineEmits(['setFilter']);
+
 const filters = [
   {
     id: 'all',
@@ -28,7 +30,7 @@ const filters = [
     v-for="filter in filters"
     :key="filter.id"
     :label="filter.label"
-    @click="store.setActiveFilter(filter.id)"
+    @click="emit('setFilter', filter.id)"
     :class="['btn', { active: store.activeFilter === filter.id }]"
   />
 </template>

@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import { useCharactersStore } from '@/stores/characters-store';
 import FilterButton from './FilterButton.vue';
 
-const store = useCharactersStore();
-const searchInput = defineModel<string>({
-  default: '',
-});
-
-const submitSearch = () => {
-  const value = searchInput.value.trim();
-  store.submitSearch(value);
-  // searchInput.value = '';
-};
+const searchInput = defineModel<string>();
+const emit = defineEmits(['submitSearch']);
 </script>
 
 <template>
   <input
-    v-model="searchInput"
+    v-model.trim="searchInput"
     class="search"
     type="text"
     placeholder="Search by name..."
   />
-  <FilterButton label="Search" class="btn" @click="submitSearch" />
+  <FilterButton label="Search" class="btn" @click="emit('submitSearch')" />
 </template>
 
 <style scoped>

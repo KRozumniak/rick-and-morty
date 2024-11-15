@@ -67,8 +67,13 @@ export const useCharactersStore = defineStore('charactersStore', () => {
   function setActiveFilter(filterId: string) {
     activeFilter.value = filterId;
     updateFilterParam(filterId);
+    resetSearch();
     resetCurrentPage();
     fetchCharacters({ query: query.toString() });
+  }
+
+  function resetSearch() {
+    updateSearchParam('');
   }
 
   function submitSearch(value: string) {
