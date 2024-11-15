@@ -8,8 +8,6 @@ const store = useCharactersStore();
 const isLoading = computed(() => store.charactersStatus === 'pending');
 const isError = computed(() => store.charactersStatus === 'error');
 
-console.log(isError);
-
 onMounted(() => {
   store.fetchCharacters({});
 });
@@ -18,7 +16,7 @@ onMounted(() => {
 <template>
   <main>
     <p v-if="isLoading">Loading...</p>
-    <p v-else-if="isError">Request error</p>
+    <p v-else-if="isError">{{ store.errorMessage }}</p>
     <CardList v-else :characters="store.characters" />
   </main>
 </template>

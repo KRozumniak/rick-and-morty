@@ -9,25 +9,17 @@ export class CharactersService {
   readonly axios: Axios;
 
   constructor() {
-    console.log('Init constructor');
     this.axios = new Axios(config);
   }
 
-  //original code
-  // async getCharacters(pageUrl?: string, speciesParam?: string) {
-  //   const initialUri = `/character${speciesParam || ''}`;
-  //   const uri = pageUrl && !speciesParam ? pageUrl : initialUri;
   async getCharacters(pageUrl?: string, query?: string) {
-    console.log('query: ', query);
     const uriWithQuery = query ? `/character?${query}` : `/character`;
-    console.log('uriWithQuery: ', uriWithQuery);
     const uri = pageUrl ? pageUrl : uriWithQuery;
-    console.log('uri: ', uri);
     const response = await this.axios.get(uri);
-    const jsonData = this.parseData<CharactersApiResponse | { error: string }>(
+    const data = this.parseData<CharactersApiResponse | { error: string }>(
       response.data
     );
-    return jsonData;
+    return { data, statusCode: response.status };
   }
 
   async getCharacter(id: string) {

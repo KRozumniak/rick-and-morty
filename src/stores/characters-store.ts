@@ -19,63 +19,78 @@ export const useCharactersStore = defineStore('charactersStore', () => {
   const service = new CharactersService();
 
   const charactersStatus = ref<ApiStatus>('pending');
-
+  const errorMessage = ref('Request error');
   const query = reactive(new URLSearchParams());
 
+  const characters = ref<Character[]>([]);
+  const currentChar = ref<Character | null>(null);
+
+  // pagination logic
+  const paginationInfo = ref<PaginationInfo>(initialPagination);
+  const currentPage = ref(1);
+
+  function resetCurrentPage() {
+    currentPage.value = 1;
+  }
+
+  function loadNextPage() {
+    ++currentPage.value;
+    const nextPageUrl = paginationInfo.value.next || '';
+    fetchCharacters({ pageUrl: nextPageUrl });
+  }
+
+  function loadPrevPage() {
+    --currentPage.value;
+    const prevPageUrl = paginationInfo.value.prev || '';
+    fetchCharacters({ pageUrl: prevPageUrl });
+  }
+
+  // filter logic
   const activeFilter = ref('all');
-  const setActiveFilter = (filterId: string) => {
-    activeFilter.value = filterId;
 
-    updateFilterSearchParam(filterId);
-    resetCurrentPage();
-    fetchCharacters({ query: query.toString() });
-  };
+  function updateFilterParam(filterId: string) {
+    if (filterId && filterId !== 'all') {
+      query.set('species', filterId);
+    } else if (query.has('species') && filterId === 'all') {
+      query.delete('species');
+    }
+  }
 
-  const submitSearch = (value: string) => {
+  function updateSearchParam(value: string) {
     if (value) {
       query.set('name', value);
     } else if (query.has('name')) {
       query.delete('name');
     }
-    console.log(query);
+  }
+
+  function setActiveFilter(filterId: string) {
+    activeFilter.value = filterId;
+    updateFilterParam(filterId);
     resetCurrentPage();
     fetchCharacters({ query: query.toString() });
-  };
+  }
 
-  const characters = ref<Character[]>([]);
-  const currentChar = ref<Character | null>(null);
+  function submitSearch(value: string) {
+    updateSearchParam(value);
+    resetCurrentPage();
+    fetchCharacters({ query: query.toString() });
+  }
 
-  const paginationInfo = ref<PaginationInfo>(initialPagination);
-
-  const currentPage = ref(1);
-  const resetCurrentPage = () => {
-    currentPage.value = 1;
-  };
-
-  const loadNextPage = async () => {
-    ++currentPage.value;
-    const nextPageUrl = paginationInfo.value.next || '';
-    fetchCharacters({ pageUrl: nextPageUrl });
-  };
-
-  const loadPrevPage = async () => {
-    --currentPage.value;
-    const prevPageUrl = paginationInfo.value.prev || '';
-    fetchCharacters({ pageUrl: prevPageUrl });
-  };
-
+  // api logic
   const fetchCharacters = async ({ pageUrl = '', query = '' }) => {
     charactersStatus.value = 'pending';
     try {
-      const data = await service.getCharacters(pageUrl, query);
+      const { data, statusCode } = await service.getCharacters(pageUrl, query);
       if (isErrorResponse(data)) {
-        throw new Error(data.error);
+        const message = statusCode === 404 ? 'Not found' : 'Request Error';
+        throw new Error(message);
       }
       paginationInfo.value = data.info;
       characters.value = data.results;
       charactersStatus.value = 'ready';
     } catch (e) {
-      console.error(e);
+      errorMessage.value = e.toString();
       charactersStatus.value = 'error';
     }
   };
@@ -93,6 +108,7 @@ export const useCharactersStore = defineStore('charactersStore', () => {
     characters,
     charactersStatus,
     currentChar,
+    errorMessage,
     currentPage,
     fetchCharacters,
     resetCurrentPage,
@@ -104,12 +120,4 @@ export const useCharactersStore = defineStore('charactersStore', () => {
     activeFilter,
     submitSearch,
   };
-
-  function updateFilterSearchParam(filterId: string) {
-    if (filterId && filterId !== 'all') {
-      query.set('species', filterId);
-    } else if (query.has('species') && filterId === 'all') {
-      query.delete('species');
-    }
-  }
 });

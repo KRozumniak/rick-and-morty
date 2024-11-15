@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useLocalStorageStore } from '@/hooks/use-local-storage';
 import { RouterLink } from 'vue-router';
+const store = useLocalStorageStore();
 </script>
 
 <template>
@@ -9,7 +11,8 @@ import { RouterLink } from 'vue-router';
       <RouterLink to="/favorites">Favorites</RouterLink>
     </nav>
     <div class="favs">
-      <i class="pi pi-heart"></i><span class="favs__count">8</span>
+      <i class="pi pi-heart"></i
+      ><span class="favs__count">{{ store.favoritesCount }}</span>
     </div>
   </header>
 </template>

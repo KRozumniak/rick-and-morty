@@ -25,8 +25,6 @@ export interface ErrorResponse {
   error: string;
 }
 
-export function isErrorResponse(
-  response: CharactersApiResponse | ErrorResponse
-): response is ErrorResponse {
+export function isErrorResponse(response: unknown): response is ErrorResponse {
   return !!(response as ErrorResponse).error;
 }

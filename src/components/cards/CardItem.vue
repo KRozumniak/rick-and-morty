@@ -2,11 +2,22 @@
 import type { Character } from '@/models';
 import TheButton from '../TheButton.vue';
 import { useRouter } from 'vue-router';
+import { useLocalStorageStore } from '@/hooks/use-local-storage';
+import { computed } from 'vue';
 
 const { character } = defineProps<{
   character: Character;
 }>();
 const router = useRouter();
+
+const store = useLocalStorageStore();
+
+const buttonLabel = computed(() => {
+  if (!!store.findCharById(character.id)) {
+    return 'Remove from Favorites';
+  }
+  return 'Add to Favorites';
+});
 
 const navigateToCharacterPage = (charId: number) => {
   const currentPath = router.currentRoute.value.path;
@@ -24,7 +35,10 @@ const navigateToCharacterPage = (charId: number) => {
       <h4>{{ character.name }}</h4>
       <p>{{ character.species }} - {{ character.status }}</p>
       <div class="action">
-        <TheButton label="Add to Favorites" />
+        <TheButton
+          @click="store.addOrRemoveCharacter(character)"
+          :label="buttonLabel"
+        />
       </div>
     </div>
   </div>

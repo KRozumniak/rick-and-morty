@@ -26,10 +26,13 @@ const router = createRouter({
     {
       path: '/favorites',
       name: 'favorites',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../pages/FavoritesPage.vue'),
+    },
+    {
+      path: '/favorites/:cId',
+      name: 'favorite',
+      component: CharacterPage,
+      props: true,
     },
   ],
   linkActiveClass: 'active',

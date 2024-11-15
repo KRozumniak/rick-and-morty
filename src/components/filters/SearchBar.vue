@@ -8,7 +8,6 @@ const searchInput = defineModel<string>({
 });
 
 const submitSearch = () => {
-  console.log('searchInput: ', searchInput.value);
   const value = searchInput.value.trim();
   store.submitSearch(value);
   // searchInput.value = '';

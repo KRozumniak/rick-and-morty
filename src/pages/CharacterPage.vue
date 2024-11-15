@@ -1,13 +1,25 @@
 <script setup lang="ts">
+import TheButton from '@/components/TheButton.vue';
+import { useLocalStorageStore } from '@/hooks/use-local-storage';
 import { useCharactersStore } from '@/stores/characters-store';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const store = useCharactersStore();
+const localStore = useLocalStorageStore();
+
+const buttonLabel = computed(() => {
+  if (!!store.currentChar && !!localStore.findCharById(store.currentChar.id)) {
+    return 'Remove from Favorites';
+  }
+  return 'Add to Favorites';
+});
+
+const cId = computed(() => route.params.cId as string);
 
 onMounted(() => {
-  store.fetchCharacter(route.params.cId as string);
+  store.fetchCharacter(cId.value);
 });
 </script>
 
@@ -18,7 +30,10 @@ onMounted(() => {
       <h4>{{ store.currentChar.name }}</h4>
       <p>{{ store.currentChar.species }} - {{ store.currentChar.status }}</p>
       <div class="action">
-        <!-- <TheButton label="Add to Favorites" /> -->
+        <TheButton
+          :label="buttonLabel"
+          @click="localStore.addOrRemoveCharacter(store.currentChar)"
+        />
       </div>
     </div>
     <div>

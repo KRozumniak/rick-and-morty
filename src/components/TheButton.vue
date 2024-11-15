@@ -1,13 +1,9 @@
 <script setup lang="ts">
 const { label } = defineProps<{ label: string }>();
-
-const handleClick = () => {
-  console.log('click');
-};
 </script>
 
 <template>
-  <button class="btn" @click.stop="handleClick">{{ label }}</button>
+  <button class="btn">{{ label }}</button>
 </template>
 
 <style scoped>
