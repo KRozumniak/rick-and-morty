@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CardList from '@/components/cards/CardList.vue';
-import { useLocalStorageStore } from '@/hooks/use-local-storage';
+import { useLocalStorageStore } from '@/stores/local-storage-store';
 
 const store = useLocalStorageStore();
 </script>

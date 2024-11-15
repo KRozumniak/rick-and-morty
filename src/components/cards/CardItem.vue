@@ -2,7 +2,7 @@
 import type { Character } from '@/models';
 import TheButton from '../TheButton.vue';
 import { useRouter } from 'vue-router';
-import { useLocalStorageStore } from '@/hooks/use-local-storage';
+import { useLocalStorageStore } from '@/stores/local-storage-store';
 import { computed } from 'vue';
 
 const { character } = defineProps<{

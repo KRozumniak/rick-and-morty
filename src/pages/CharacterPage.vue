@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TheButton from '@/components/TheButton.vue';
-import { useLocalStorageStore } from '@/hooks/use-local-storage';
+import { useLocalStorageStore } from '@/stores/local-storage-store';
 import { useCharactersStore } from '@/stores/characters-store';
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocalStorageStore } from '@/hooks/use-local-storage';
+import { useLocalStorageStore } from '@/stores/local-storage-store';
 import { RouterLink } from 'vue-router';
 const store = useLocalStorageStore();
 </script>
