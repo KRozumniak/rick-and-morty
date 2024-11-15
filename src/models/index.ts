@@ -4,6 +4,11 @@ export interface Character {
   species: string;
   status: string;
   image: string;
+  episode: string[];
+  location: {
+    name: string;
+    url: string;
+  };
 }
 
 export type ApiStatus = 'pending' | 'ready' | 'error';

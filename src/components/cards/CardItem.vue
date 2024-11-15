@@ -36,7 +36,7 @@ const navigateToCharacterPage = (charId: number) => {
       <p>{{ character.species }} - {{ character.status }}</p>
       <div class="action">
         <TheButton
-          @click="store.addOrRemoveCharacter(character)"
+          @click.stop="store.addOrRemoveCharacter(character)"
           :label="buttonLabel"
         />
       </div>

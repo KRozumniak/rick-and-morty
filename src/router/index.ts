@@ -3,6 +3,7 @@ import CharactersPage from '../pages/CharactersPage.vue';
 import CharacterPage from '../pages/CharacterPage.vue';
 import ThePagination from '@/components/ThePagination.vue';
 import FiltersContainer from '@/components/filters/FiltersContainer.vue';
+import FavoritesPage from '@/pages/FavoritesPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,7 +27,7 @@ const router = createRouter({
     {
       path: '/favorites',
       name: 'favorites',
-      component: () => import('../pages/FavoritesPage.vue'),
+      component: FavoritesPage,
     },
     {
       path: '/favorites/:cId',
