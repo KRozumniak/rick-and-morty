@@ -95,7 +95,7 @@ export const useCharactersStore = defineStore('charactersStore', () => {
       characters.value = data.results;
       charactersStatus.value = 'ready';
     } catch (e) {
-      errorMessage.value = e.toString();
+      errorMessage.value = (e as Error).toString();
       charactersStatus.value = 'error';
     }
   };
