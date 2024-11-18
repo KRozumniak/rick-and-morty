@@ -35,6 +35,10 @@ const router = createRouter({
       component: CharacterPage,
       props: true,
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
+    },
   ],
   linkActiveClass: 'active',
 });
